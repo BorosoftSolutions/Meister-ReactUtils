@@ -1,5 +1,3 @@
-const serverAddress = "/api/";
-
 async function fetchWithTimeout(resource, options = {}) {
     const { timeout = 5000 } = options;
     
@@ -15,9 +13,13 @@ async function fetchWithTimeout(resource, options = {}) {
     return response;
 }
 
-module.exports =
+module.exports = class API
 {
-    Get: async (route, params, headers) => {
+    constructor(serverAddress) {
+        this.serverAddress = serverAddress;
+    }
+    async Get(route, params, headers) {
+        console.log("test");
         var r = route;
         if(params != null) r += "?" + new URLSearchParams(params);
         var object = {
@@ -26,7 +28,7 @@ module.exports =
         };
         console.log(r);
         try {
-            const response = await fetchWithTimeout(serverAddress + r, { headers: headers});
+            const response = await fetch(this.serverAddress + r, { headers: headers});
             object.data = await response.json();
         } catch (error) {
             object.message = error.message;
