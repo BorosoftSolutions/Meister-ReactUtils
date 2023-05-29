@@ -23,12 +23,15 @@ module.exports = class
         if(params != null) r += "?" + new URLSearchParams(params);
         var object = {
             data: null,
-            message: ""
+            message: "",
+            status: 0
         };
         console.log(this.serverAddress + route);
         try {
             const response = await fetch(this.serverAddress + r, { headers: headers});
             const text = await response.text();
+
+            object.status = response.status;
 
             try {
                 object.data = JSON.parse(text);
