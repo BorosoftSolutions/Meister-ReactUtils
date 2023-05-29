@@ -51,6 +51,6 @@ module.exports = class
         return await this.Get("account/get", { id: id})
     }
     async GetInfoFromToken(token) {
-        return await this.Get("account/get", null, {"auth-token": token.data});
+        return await this.Get("account/get", null, {"auth-token": token});
     }
 }
