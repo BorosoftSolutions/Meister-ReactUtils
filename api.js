@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 async function fetchWithTimeout(resource, options = {}) {
     const { timeout = 5000 } = options;
     
