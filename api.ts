@@ -1,4 +1,4 @@
-async function fetchWithTimeout(resource, options = {}) {
+async function fetchWithTimeout(resource : any, options: any) {
     const { timeout = 5000 } = options;
     
     const controller = new AbortController();
@@ -13,15 +13,22 @@ async function fetchWithTimeout(resource, options = {}) {
     return response;
 }
 
+interface APIResponse {
+    data: any,
+    message: string,
+    status: number
+}
+
 module.exports = class
 {
-    constructor(serverAddress) {
+    serverAddress: string;
+    constructor(serverAddress : string) {
         this.serverAddress = serverAddress;
     }
-    async Get(route, params, headers) {
+    async Get(route : string, params : any | null = null, headers : any | null = null) {
         var r = route;
         if(params != null) r += "?" + new URLSearchParams(params);
-        var object = {
+        const object : APIResponse = {
             data: null,
             message: "",
             status: 0
@@ -39,20 +46,32 @@ module.exports = class
                 object.data = text;
             }
 
-        } catch (error) {
+        } catch (error: any) {
             object.message = error.message;
         } 
         return object;
     }
 
-    async SignIn(username, password) {
+    async SignIn(username : string, password : string) {
         return await this.Get("account/login", {username: username, password: password})
     }
 
-    async GetAccountInfo(id) {
+    async SearchListings(query : string, distance : number, longitude : number, latitude : number) {
+        return await this.Get("listing/Search", {
+            long: longitude,
+            lat: latitude,
+            search: query,
+            dist: distance
+          })
+    }
+
+    async GetAccountInfo(id: number) {
         return await this.Get("account/get", { id: id})
     }
-    async GetInfoFromToken(token) {
+    async GetInfoFromToken(token: string) {
         return await this.Get("account/get", null, {"auth-token": token});
+    }
+    async GetMyListings(token: string) {
+        return await this.Get("listing/getmylistings", null, {"auth-token": token});
     }
 }
