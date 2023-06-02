@@ -25,7 +25,7 @@ module.exports = class
     constructor(serverAddress : string) {
         this.serverAddress = serverAddress;
     }
-    async Get(route : string, params : any | null = null, headers : any | null = null) {
+    async Get(route : string, params : any | null = null, headers : any | undefined = undefined) {
         var r = route;
         if(params != null) r += "?" + new URLSearchParams(params);
         const object : APIResponse = {
