@@ -19,7 +19,7 @@ interface APIResponse {
     status: number
 }
 
-module.exports = class
+export default class API
 {
     serverAddress: string;
     constructor(serverAddress : string) {
